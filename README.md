@@ -1,1 +1,1 @@
-# 3D-Reconstruction-of-one-room-
+# 3D Reconstruction of one room
