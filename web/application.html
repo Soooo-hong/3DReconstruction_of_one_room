@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>3DReconstruction_of_one_room</title>
+    <link rel="stylesheet" href="css/application_css.css"> <!-- CSS 파일 링크 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* 박스 모델 설정 */
+        }
+        @font-face {
+            font-family: 'Spoqa Han Sans Neo';
+            src: url('css/font/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        html, body {
+            height: 100%; /* 높이를 100%로 설정 */
+        }
+       
+    </style>
+</head>
+<body>
+	<div id="banner">미리보는 내 자취방</div> <!-- 배너 추가 -->
+
+    <div id="buttonContainer">
+        <div class="buttonGroup">
+            <div class="inputContainer">
+                <input type="text" class="inputField" placeholder="지역을 입력해주세요" id="locationinput"/>
+                <button class="searchButton" id="searchButton">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="34.3px" height="34.3px">    
+                        <path fill="white" d="M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 19.585938 21.585938 C 20.137937 22.137937 21.033938 22.137938 21.585938 21.585938 C 22.137938 21.033938 22.137938 20.137938 21.585938 19.585938 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="buttonGroup">
+        <p class="text">전/월세를 선택해주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+        <div class="buttonRow">
+            <button class="rotateButton" id="rotateXButton">전세</button>
+            <button class="rotateButton" id="rotateYButton">월세</button>
+        </div>
+        </div>
+        <div class="buttonGroup hidden" id="depositGroup">
+            <p class="text">보증금 가격을 선택해주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+            <div class="buttonRow">
+                <button class="rotateButton" id="rotateZ1Button">300만원 이하</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateZ2Button">300만원이상</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateZ3Button">500만원 이상</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateZ4Button">1000만원 이상</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+            </div>
+        </div>
+        <div class="buttonGroup hidden" id="monthrentGroup">
+            <p class="text">월세 가격을 선택해​주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+            <div class="buttonRow">
+                <button class="rotateButton" id="rotateA1Button">50만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateA2Button">70만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateA3Button">90만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateA4Button">100만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
+            </div>
+        </div>
+        <div class="buttonGroup hidden" id="rentGroup">
+            <p class="text">전세 가격을 선택해​주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+            <div class="buttonRow">
+                <button class="rotateButton" id="rotateB1Button">5000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateB2Button">7000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateB3Button">1억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rotateB4Button">2.5억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
+            </div>
+        </div>
+    </div>
+
+    <div id="sceneButtonContainer">
+        <div class = "sceneGroup">
+        <div class="buttonRow">
+            <button class="sceneButton" id="openSceneButton">
+                <p>1번방 <br>
+                가격 : 얼마<br>
+                옵션 : 세탁기, 에어컨 </p>
+            </button>
+        </div>
+        </div>
+        <div class = "sceneGroup">
+        <div class="buttonRow">
+            <button class="sceneButton" id="openSceneButton">
+                <p>2번방 <br>
+                    가격 : 얼마<br>
+                    옵션 : 세탁기, 에어컨 </p>
+            </button>
+        </div>
+        </div>
+        <div class = "sceneGroup">
+        <div class="buttonRow">
+            <button class="sceneButton" id="openSceneButton">
+                <p>1번방 <br>
+                    가격 : 얼마<br>
+                    옵션 : 세탁기, 에어컨 </p>
+            </button>
+        </div>
+        </div>
+    </div>
+    <script>
+        
+        document.getElementById('openSceneButton').addEventListener('click', () => {
+            window.open('3dreweb.html', '_blank'); // 새로운 페이지에서 씬 열기
+        });
+        document.getElementById('searchButton').addEventListener('click', () => {
+            const input = document.getElementById('locationinput');
+            if (input.value) {
+                console.log("입력된 지역:", input.value); // 실제로는 원하는 동작으로 변경 가능
+            }
+        });
+        document.getElementById('locationinput').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                document.getElementById('searchButton').click();
+            }
+        }); 
+        document.getElementById('rotateXButton').addEventListener('click', () => {
+            document.getElementById('depositGroup').classList.add('hidden'); 
+            document.getElementById('monthrentGroup').classList.add('hidden'); 
+            document.getElementById('rentGroup').classList.remove('hidden'); 
+            console.log('선택한 구입 유형')
+        });
+        
+        document.getElementById('rotateYButton').addEventListener('click', () => {
+            document.getElementById('depositGroup').classList.remove('hidden'); 
+            document.getElementById('rentGroup').classList.add('hidden'); 
+        });
+        document.getElementById('rotateZ1Button').addEventListener('click', () => {
+            document.getElementById('monthrentGroup').classList.remove('hidden'); 
+        });
+        document.getElementById('rotateZ2Button').addEventListener('click', () => {
+            document.getElementById('monthrentGroup').classList.remove('hidden'); 
+        });
+        document.getElementById('rotateZ3Button').addEventListener('click', () => {
+            document.getElementById('monthrentGroup').classList.remove('hidden'); 
+        });
+        document.getElementById('rotateZ4Button').addEventListener('click', () => {
+            document.getElementById('monthrentGroup').classList.remove('hidden'); 
+        });
+
+
+    </script>
+</body>
+</html>
+
