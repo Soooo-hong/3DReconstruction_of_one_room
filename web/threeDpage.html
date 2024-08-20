@@ -2,31 +2,51 @@
 <html lang="ko">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Three.js 씬 페이지</title>
+    <link rel ="stylesheet" href="css/threeDcss.css"> <!-- CSS 파일 링크 -->
     <style>
-        body {
-            margin: 0;
-            background-color: #172627; /* 배경색 설정 */
-        }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box; /* 박스 모델 설정 */
+            }
+            @font-face {
+                font-family: 'Spoqa Han Sans Neo';
+                src: url('css/font/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Bold.ttf') format('truetype');
+                font-weight: bold;
+                font-style: normal;
+            }
+            html, body {
+                height: 100%; /* 높이를 100%로 설정 */
+            }
+               
         canvas { display: block; }
     </style>
 </head>
 <body>
+    <div id="banner" onclick="goBack()">미리보는 내 자취방</div> 
+    <div id="threeDcontainer"></div>
+
     <script type="module">
         import * as THREE from 'https://cdn.jsdelivr.net/npm/three/build/three.module.js';
 
         // 씬, 카메라, 렌더러 생성
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x172627); // 배경색을 body와 동일하게 설정
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(80 * window.innerWidth / 100, 80 * window.innerHeight / 100); // 컨테이너 크기에 맞춤
+        renderer.setClearColor(0xeeeeee); // 배경색을 body와 동일하게 설정
         document.body.appendChild(renderer.domElement);
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('threeDcontainer').appendChild(renderer.domElement);
 
         // 큐브 생성
         const geometry = new THREE.BoxGeometry();
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const cube = new THREE.Mesh(geometry, material);
+        cube.position.set(0, 0, 0);
         scene.add(cube);
 
         camera.position.z = 5;
@@ -34,6 +54,8 @@
         // 애니메이션 함수
         function animate() {
             requestAnimationFrame(animate);
+            cube.rotation.x += 0.01; // 큐브 회전
+            cube.rotation.y += 0.01; // 큐브 회전
             renderer.render(scene, camera);
         }
 
@@ -41,10 +63,17 @@
 
         // 창 크기 변경 시 렌더러 크기 조정
         window.addEventListener('resize', () => {
+            const container = document.getElementById('threeDcontainer');
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        function goBack() { 
+            window.history.back();
+        }
+        document.getElementById('banner').addEventListener('click', goBack);
+
     </script>
 </body>
 </html>
