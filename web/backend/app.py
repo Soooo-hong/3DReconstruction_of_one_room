@@ -3,8 +3,20 @@ from flask_cors import CORS
 import os 
 import subprocess 
 
-app = Flask(__name__)
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__,
+            template_folder= os.path.join(basedir,'../frontend/template'),
+            static_folder= os.path.join(basedir,'../frontend/static'))
 CORS(app)
+
+@app.route('/')
+def run_application() : 
+    return render_template('application.html')
+
+@app.route('/threeDpage')
+def threeDpage():
+    return render_template('threeDpage.html')
 
 @app.route('/process', methods=['POST'])
 def process_data() :

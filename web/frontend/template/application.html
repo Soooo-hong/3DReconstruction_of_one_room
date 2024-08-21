@@ -275,7 +275,7 @@
 
         sceneButtons.forEach(buttonId => {
             document.getElementById(buttonId).addEventListener('click', () => {
-                window.location.href = 'threeDpage.html'; // 새로운 페이지에서 씬 열기
+                window.location.href = '/threeDpage'; // 새로운 페이지에서 씬 열기
             });
         });
 
@@ -364,6 +364,7 @@
             const sceneElements = document.querySelectorAll('.sceneButton');
             if (lastClickedGroup.startsWith('rentprice') || lastClickedGroup.startsWith('monthprice') ) {
                 sendData(saveData)
+                // 만일 플라스크로부터 정보가 넘어온다면 hidden제거 코드를 플라스크와 연결되는 코드로 변경해야됨
                 sceneElements.forEach(sceneElement => {
                     sceneElement.classList.remove('hidden');
                     saveGroupState2()
@@ -418,6 +419,7 @@
             .then(data => {
                 // 결과를 HTML에 표시
                 document.getElementById('openScene1Button').innerText = data.result;
+                document.getElementById('sceneButtonContainer').classList.remove('hidden');
             })
             .catch(error => {
                 console.error('Error:', error);
