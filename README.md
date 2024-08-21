@@ -9,7 +9,7 @@ pip install requirements.txt
 ```
 ### Web Demo
 ```
-write a start code
+python web/backend/app.py 
 ```
 
 ### Page
