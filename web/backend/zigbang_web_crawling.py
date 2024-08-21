@@ -118,7 +118,7 @@ def room_image_down(room_num):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         
-    room_output_dir = 'crowling_images/room_'+str(room_num)
+    room_output_dir = '../../crowling_images/room_'+str(room_num)
     if not os.path.exists(room_output_dir):
         os.makedirs(room_output_dir)
     else:
@@ -279,7 +279,7 @@ else :
 
 room_num=1
 
-room_search_path = ['//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[5]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[6]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[7]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[10]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[11]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[12]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[5]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[8]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[9]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[10]/div/div/div']
+room_search_path = ['//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[5]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[6]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[7]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[10]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[11]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[4]/div/div[12]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[4]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[5]/div/div/div','//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[6]/div/div/div' ,'//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[8]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[9]/div/div/div', '//*[@id="__next"]/div[2]/div/div[2]/div/div[2]/div[1]/div/div[2]/div/div[10]/div/div/div']
 room_search_path_indx=0
 while room_num<4:
     
@@ -287,14 +287,12 @@ while room_num<4:
         break
     
     try :#방 클릭
-        input("방 클릭 하는중~")
         search_room = driver.find_element(By.XPATH, room_search_path[room_search_path_indx])
         search_room.click()
         time.sleep(3)
         
         room_image_down(room_num)
         room_num+=1
-        input("첫번쨰 방 사진 다운 완료")
         
         try:
             #X버튼
