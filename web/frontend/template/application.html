@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>3DReconstruction_of_one_room</title>
-    <link rel="stylesheet" href="css/application_css.css"> <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="../static/css/application_css.css"> <!-- CSS 파일 링크 -->
     <style>
         * {
             margin: 0;
@@ -30,7 +30,7 @@
             <div class="inputContainer">
                 <input type="text" class="inputField" placeholder="지역을 입력해주세요" id="locationinput"/>
                 <button class="searchButton" id="searchButton">
-                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="34.3px" height="34.3px">    
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="34.7px" height="34.7px">    
                         <path fill="white" d="M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 19.585938 21.585938 C 20.137937 22.137937 21.033938 22.137938 21.585938 21.585938 C 22.137938 21.033938 22.137938 20.137938 21.585938 19.585938 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z"/>
                     </svg>
                 </button>
@@ -78,7 +78,9 @@
             <button class="sceneButton hidden" id="openScene1Button">
                 <p>1번방 <br>
                 가격 : 얼마<br>
-                옵션 : 세탁기, 에어컨 </p>
+                옵션 : 세탁기, 에어컨
+                <pre>{{result}}</pre>
+             </p>
             </button>
         </div>
         </div>
@@ -102,11 +104,15 @@
         </div>
     </div>
     <script>
-        
+        let saveData =[];
         document.getElementById('searchButton').addEventListener('click', () => {
             const input = document.getElementById('locationinput');
             if (input.value) {
                 //sendData(input.value);
+                window.localStorage.clear();
+                resetButton();
+                applyHiddenClass();
+                saveData.push({region : input.value});
                 console.log("입력된 지역:", input.value); // 실제로는 원하는 동작으로 변경 가능
             }
         });
@@ -128,6 +134,10 @@
                 groups.rent.classList.remove('hidden') ;
                 groups.deposit.classList.add('hidden');
                 groups.monthRent.classList.add('hidden');
+                saveData = saveData.map(item => ({
+                    ...item,
+                    rentype : '전세'
+                }));
                 toggleActiveButton('Rent1');
                 reset('Rent1')
                 saveGroupState();
@@ -135,59 +145,111 @@
             Rent2: () => {
                 groups.deposit.classList.remove('hidden');
                 groups.rent.classList.add('hidden');
+                saveData = saveData.map(item => ({
+                    ...item,
+                    rentype : '월세'
+                }));
                 toggleActiveButton('Rent2');
                 reset('Rent2')
                 saveGroupState();
             },
             depositprice1: () => {
                 groups.monthRent.classList.remove('hidden');
+                saveData = saveData.map(item => ({
+                    ...item,
+                    depositprice : '1번 보증금 가격'
+                }));
                 toggleActiveButton('depositprice1');
                 saveGroupState();
             },
             depositprice2: () => {
                 groups.monthRent.classList.remove('hidden');
+                saveData = saveData.map(item => ({
+                    ...item,
+                    depositprice : '2번 보증금 가격'
+                }));
                 toggleActiveButton('depositprice2');
                 saveGroupState();
             },
             depositprice3: () => {
                 groups.monthRent.classList.remove('hidden');
+                saveData = saveData.map(item => ({
+                    ...item,
+                    depositprice : '3번 보증금 가격'
+                }));
                 toggleActiveButton('depositprice3');
                 saveGroupState();
             },
             depositprice4: () => {
                 groups.monthRent.classList.remove('hidden');
+                saveData = saveData.map(item => ({
+                    ...item,
+                    depositprice : '4번 보증금 가격'
+                }));
                 toggleActiveButton('depositprice4');
                 saveGroupState();
             },
             monthprice1: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    monthprice : '1번 월세 가격'
+                }));                
                 toggleActiveButton('monthprice1');
                 saveGroupState();
             },
             monthprice2: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    monthprice : '2번 월세 가격'
+                }));
                 toggleActiveButton('monthprice2');
                 saveGroupState();
             },
             monthprice3: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    monthprice : '3번 월세 가격'
+                }));
                 toggleActiveButton('monthprice3');
                 saveGroupState();
             },
             monthprice4: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    monthprice : '4번 월세 가격'
+                }));
                 toggleActiveButton('monthprice4');
                 saveGroupState();
             },
             rentprice1: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    rentprice : '1번 전세 가격'
+                }));
                 toggleActiveButton('rentprice1');
                 saveGroupState();
             },
             rentprice2: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    rentprice : '2번 전세 가격'
+                }));
                 toggleActiveButton('rentprice2');
                 saveGroupState();
             },
             rentprice3: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    rentprice : '3번 전세 가격'
+                }));
                 toggleActiveButton('rentprice3');
                 saveGroupState();
             },
             rentprice4: () => {
+                saveData = saveData.map(item => ({
+                    ...item,
+                    rentprice : '4번 전세 가격'
+                }));
                 toggleActiveButton('rentprice4');
                 saveGroupState();
             },
@@ -199,7 +261,7 @@
 
             buttonElement.addEventListener('click', () => {
                 action();
-                const buttonText = buttonElement.innerText
+
                 //sendData(buttonText)
                 localStorage.setItem(`buttonState${buttonId}`,buttonElement.classList.contains('activeButton'))
             });
@@ -218,18 +280,22 @@
         });
 
         window.onload =() => {
-            restoreGroupState();
-            for(const [buttonId,action] of Object.entries(buttons)) {
-                const state = localStorage.getItem(`buttonState${buttonId}`);
-                if (state == 'true') { 
-                    //보증금 선택 창에 remove hidden넣기 
-                    const buttonGroupPrefix = buttonId.charAt(0);
-                    const buttonGroup = Object.keys(buttons).filter(buttonId => buttonId.startsWith(buttonGroupPrefix));
-                    buttonGroup.forEach(buttonId => {
-                        document.getElementById(buttonId).classList.remove('hidden')
-                    })
-                    document.getElementById(buttonId).classList.add('activeButton');
+            if (performance.navigation.type === performance.navigation.TYPE_BACK_FORWARD) {
+                restoreGroupState();
+                for(const [buttonId,action] of Object.entries(buttons)) {
+                    const state = localStorage.getItem(`buttonState${buttonId}`);
+                    if (state == 'true') { 
+                        const buttonGroupPrefix = buttonId.charAt(0);
+                        const buttonGroup = Object.keys(buttons).filter(buttonId => buttonId.startsWith(buttonGroupPrefix));
+                        buttonGroup.forEach(buttonId => {
+                            document.getElementById(buttonId).classList.remove('hidden')
+                        })
+                        document.getElementById(buttonId).classList.add('activeButton');
+                    }
                 }
+            }
+            else{
+                resetButton();
             }
         };
 
@@ -247,8 +313,32 @@
                 localStorage.setItem(`buttonState${buttonId}`, 'false');
             });
         }
+        function resetButton() {
+           const activeButtons = document.querySelectorAll('.activeButton');
+           activeButtons.forEach(button => {
+            button.classList.remove('activeButton');
+        });
+        }
+
+        const idsToHide = ['depositGroup' ,'monthrentGroup' ,'rentGroup', 'openScene1Button', 'openScene2Button' ,'openScene3Button'];
+
+        function applyHiddenClass() {
+            idsToHide.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('hidden'); // hidden 클래스 추가
+                }
+            });
+        
+            console.log("hidden 클래스가 적용되었습니다.");
+        }
         
         // activeButton 클래스 토글 함수
+        const sceneopenButtons = {
+            open1: document.getElementById('openScene1Button'),
+            open2: document.getElementById('openScene2Button'),
+            open3: document.getElementById('openScene3Button')
+        };
         let lastClickedGroup = '';
 
         function toggleActiveButton(clickedButtonId) {
@@ -272,16 +362,18 @@
 
             lastClickedGroup = clickedButtonId;
             const sceneElements = document.querySelectorAll('.sceneButton');
-            if (lastClickedGroup.startsWith('rentprice') || lastClickedGroup.startsWith('monthprice')) {
+            if (lastClickedGroup.startsWith('rentprice') || lastClickedGroup.startsWith('monthprice') ) {
+                sendData(saveData)
                 sceneElements.forEach(sceneElement => {
                     sceneElement.classList.remove('hidden');
+                    saveGroupState2()
                 });
             } else {
                 sceneElements.forEach(sceneElement => {
                     sceneElement.classList.add('hidden'); // 모든 요소에서 hidden 클래스 추가
                 });
             }
-
+            console.log('저장된 데이터',saveData)
         }
         function saveGroupState() {
             Object.keys(groups).forEach(groupKey => {
@@ -289,7 +381,12 @@
                 localStorage.setItem(`${groupKey}Visible`, !group.classList.contains('hidden'));
             });
         }
-        
+        function saveGroupState2() {
+            Object.keys(sceneopenButtons).forEach(groupKey => {
+                const scenebutton = sceneopenButtons[groupKey];
+                localStorage.setItem(`${groupKey}Visible`, !scenebutton.classList.contains('hidden'));
+            });
+        }
         // 그룹 상태를 복원하는 함수
         function restoreGroupState() {
             Object.keys(groups).forEach(groupKey => {
@@ -300,29 +397,32 @@
                     groups[groupKey].classList.add('hidden');
                 }
             });
+            Object.keys(sceneopenButtons).forEach(groupKey => {
+                const isVisible2 = localStorage.getItem(`${groupKey}Visible`) ==='true';
+                if (isVisible2) {
+                    sceneopenButtons[groupKey].classList.remove('hidden');
+                } else {
+                    sceneopenButtons[groupKey].classList.add('hidden');
+                }
+            }) 
         }
-        /*function sendData(inform) {
-            const data = {
-                information : inform
-            };
-            fetch('sveData.php', {
-                method : 'POST' ,
+        function sendData(inform) {
+            fetch('http://127.0.0.1:5000/process', {
+                method: 'POST',
                 headers: {
-                    'Content-Type' : 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body : JSON.stringify(data)
+                body: JSON.stringify({ data: inform }),
             })
-            .then (response => response.json())
+            .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                alert('데이터가 성공적으로 전송되었습니다!');
+                // 결과를 HTML에 표시
+                document.getElementById('openScene1Button').innerText = data.result;
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error:', error);
-                alert('데이터 전송 중 오류가 발생했습니다.');
             });
-        }*/
+        }
     </script>
 </body>
 </html>
-
