@@ -6,17 +6,31 @@
         <title>Three.js 씬 페이지</title>
         <style>
             body { margin: 0; }
-            canvas { display: block; }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box; /* 박스 모델 설정 */
+            }
             @font-face {
                 font-family: 'Spoqa Han Sans Neo';
                 src: url('css/font/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Bold.ttf') format('truetype');
                 font-weight: bold;
                 font-style: normal;
             }
+            html, body {
+                height: 100%; /* 높이를 100%로 설정 */
+            }
+            canvas { display: block; }
         </style>
     </head> 
     <body>	
-        <button id="load3dButton">Load 3d Model</button>
+        <div id="banner" onclick="goBack()">미리보는 내 자취방</div> 
+        <div id="threeDcontainer"></div>
+        <button class = "buttonContainer"  id="load3dButton">Load 3d Model</button>
+        <button class = "room_load" id="reset" >Position reset </button>
+        <button class = "room_load" id="room1" >Go room1</button>
+        <button class = "room_load" id="room2" >Go room2</button>
+        <button class = "room_load" id="room3" >Go room3</button>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>

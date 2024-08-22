@@ -14,20 +14,25 @@ body {
     letter-spacing: 0em; /* 글자 간격 */}
 canvas { display: block; }
  /* 배너 스타일 */
-#banner {
-    cursor: pointer;
-    width: 100%; /* 전체 너비 */
-    color: white; /* 배너 텍스트 색상 */
-    padding: 20px; /* 패딩 */
-    font-size: 35px; /* 폰트 크기 */
-    position: absolute; /* 위치 조정 */
+ #banner-container {
+    display: flex; /* 플렉스 박스를 사용하여 배너와 버튼들을 한 줄에 배치 */
+    align-items: center; /* 수직 정렬 */
+    position: absolute;
     top: 3%; /* 상단에 위치 */
     left: 1.3%; /* 좌측에 위치 */
     z-index: 10;
+    width: 100%; /* 전체 너비 */
+}
+
+#banner {
+    cursor: pointer;
+    color: white; /* 배너 텍스트 색상 */
+    padding: 20px; /* 패딩 */
+    font-size: 35px; /* 폰트 크기 */
 }
 #threeDcontainer {
-    width : 80vw;
-    height: 80vh;
+    width :85vw;
+    height: 82vh;
     background-color: #eeeeee;
     overflow: hidden;
     position : absolute;
@@ -36,4 +41,37 @@ canvas { display: block; }
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1;
+}
+
+/*
+#load3dButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}*/
+
+.buttonContainer, .room_load {
+    background-color: #4CAF50; /* 녹색 배경 */
+    color: white; /* 흰색 텍스트 */
+    padding: 10px 20px; /* 패딩 조정 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    text-decoration: none; /* 텍스트 장식 제거 */
+    font-size: 16px; /* 글꼴 크기 */
+    margin-left: 10px; /* 배너와 버튼 사이의 간격 */
+    cursor: pointer; /* 커서 모양을 포인터로 변경 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    border: none; /* 테두리 제거 */
+    transition: background-color 0.3s ease; /* 배경색 변화 트랜지션 */
+    display: inline-block; /* 인라인 블록 */
+}
+
+.room_load {
+    display: none; /* 기본적으로 숨김 */
 }
