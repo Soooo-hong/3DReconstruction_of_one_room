@@ -73,9 +73,6 @@
     </div>
 
     <div id="sceneButtonContainer">
-        <div class ="scenequestion hidden" id= "openSceneButton"> 
-            <p class="text">보고싶은 방을 클릭하고 Run 버튼을 눌러주세요</p>
-        </div>
         <div class = "sceneGroup ">
         <div class="buttonRow">
             <button class="sceneButton hidden" id="openScene1Button">
@@ -86,13 +83,17 @@
              </p>
             </button>
         </div>
+        </div>
+        <div class = "sceneGroup ">
         <div class="buttonRow">
             <button class="sceneButton hidden" id="openScene2Button">
                 <p>2번방 <br>
                     가격 : 얼마<br>
                     옵션 : 세탁기, 에어컨 </p>
             </button>
-        </div>        
+        </div>
+        </div>
+        <div class = "sceneGroup ">
         <div class="buttonRow">
             <button class="sceneButton hidden" id="openScene3Button">
                 <p>3번방 <br>
@@ -101,18 +102,9 @@
             </button>
         </div>
         </div>
-        <div class = "sceneGroup">
-            <div class="buttonRow">
-                <button class=" sceneButton2 hidden" id="openScene4Button" onclick="goToRenderingPage()">
-                    <p> Run <br>
-                        3D Reconstruction</p>
-                </button>
-            </div>
-        </div>
     </div>
     <script>
         let saveData =[];
-        let renderData = [];
         document.getElementById('searchButton').addEventListener('click', () => {
             const input = document.getElementById('locationinput');
             if (input.value) {
@@ -261,18 +253,6 @@
                 toggleActiveButton('rentprice4');
                 saveGroupState();
             },
-            openScene1Button: () => {
-                toggleActiveButton('openScene1Button');
-                saveGroupState();
-            },
-            openScene2Button: () => {
-                toggleActiveButton('openScene2Button');
-                saveGroupState();
-            },
-            openScene3Button: () => {
-                toggleActiveButton('openScene3Button');
-                saveGroupState();
-            },
         };
 
         // 버튼 클릭 이벤트 리스너 등록
@@ -285,14 +265,19 @@
                 //sendData(buttonText)
                 localStorage.setItem(`buttonState${buttonId}`,buttonElement.classList.contains('activeButton'))
             });
-        } 
+        }
 
         const sceneButtons = [
         'openScene1Button',
         'openScene2Button',
-        'openScene3Button',
-        'openScene4Button'
+        'openScene3Button'
         ];
+
+        sceneButtons.forEach(buttonId => {
+            document.getElementById(buttonId).addEventListener('click', () => {
+                window.location.href = '/threeDpage'; // 새로운 페이지에서 씬 열기
+            });
+        });
 
         window.onload =() => {
             if (performance.navigation.type === performance.navigation.TYPE_BACK_FORWARD) {
@@ -335,7 +320,7 @@
         });
         }
 
-        const idsToHide = ['depositGroup' ,'monthrentGroup' ,'rentGroup', 'openScene1Button', 'openScene2Button' ,'openScene3Button','openSceneButton','openScene4Button'];
+        const idsToHide = ['depositGroup' ,'monthrentGroup' ,'rentGroup', 'openScene1Button', 'openScene2Button' ,'openScene3Button'];
 
         function applyHiddenClass() {
             idsToHide.forEach(id => {
@@ -350,11 +335,9 @@
         
         // activeButton 클래스 토글 함수
         const sceneopenButtons = {
-            ques : document.getElementById('openSceneButton'),
             open1: document.getElementById('openScene1Button'),
             open2: document.getElementById('openScene2Button'),
-            open3: document.getElementById('openScene3Button'),
-            open4 : document.getElementById('openScene4Button')
+            open3: document.getElementById('openScene3Button')
         };
         let lastClickedGroup = '';
 
@@ -368,54 +351,28 @@
                 }
             }
             // 모든 버튼에서 activeButton 클래스 제거
-            const renderbuttons = ['openScene1Button', 'openScene2Button', 'openScene3Button'];
-            const isActive = document.getElementById(clickedButtonId).classList.contains('activeButton');
             activeButtons.forEach(buttonId => {
-                if (!renderbuttons.includes(buttonId)){
                 document.getElementById(buttonId).classList.remove('activeButton');
                 localStorage.setItem(`buttonState${buttonId}`, 'false');
-                }else{
-                    if (isActive) {
-                        document.getElementById(clickedButtonId).classList.remove('activeButton');
-                        localStorage.setItem(`buttonState${clickedButtonId}`, 'false');
-                        renderData = renderData.filter(buttonId => buttonId !== clickedButtonId);
-                    } else{
-                        document.getElementById(clickedButtonId).classList.add('activeButton');
-                        localStorage.setItem(`buttonState${clickedButtonId}`,`true`)
-                        renderData.push(clickedButtonId);
-                    }
-                }
             });
+        
             // 클릭한 버튼에 activeButton 클래스 추가
-            if (!renderbuttons.includes(clickedButtonId)){
             document.getElementById(clickedButtonId).classList.add('activeButton');
             localStorage.setItem(`buttonState${clickedButtonId}`,`true`)
-            };
 
             lastClickedGroup = clickedButtonId;
             const sceneElements = document.querySelectorAll('.sceneButton');
-            const sceneQuestion = document.querySelector('#openSceneButton');
-            const sceneElements2 = document.querySelector('.sceneButton2');
             if (lastClickedGroup.startsWith('rentprice') || lastClickedGroup.startsWith('monthprice') ) {
                 sendData(saveData)
                 // 만일 플라스크로부터 정보가 넘어온다면 hidden제거 코드를 플라스크와 연결되는 코드로 변경해야됨
                 sceneElements.forEach(sceneElement => {
                     sceneElement.classList.remove('hidden');
+                    saveGroupState2()
                 });
-                sceneElements2.classList.remove('hidden')
-                sceneQuestion.classList.remove('hidden');
-                saveGroupState2()
-            } else if(lastClickedGroup.startsWith('open')) {
-                /*렌더링 데이터 보내기 코드작성 필요*/
-                console.log('클릭된 버튼 주소', renderData)
-            }
-            
-            else {
+            } else {
                 sceneElements.forEach(sceneElement => {
                     sceneElement.classList.add('hidden'); // 모든 요소에서 hidden 클래스 추가
                 });
-                sceneElements2.classList.add('hidden')
-                sceneQuestion.classList.add('hidden');
             }
             console.log('저장된 데이터',saveData)
         }
@@ -449,15 +406,6 @@
                     sceneopenButtons[groupKey].classList.add('hidden');
                 }
             }) 
-        }
-        function goToRenderingPage() { 
-            const uniqueRenderData = [...new Set(renderData)]
-            const RenderAddress = uniqueRenderData.map(id=> id.match(/\d+/)).filter(num=> num!= null).map(num=> num[0]);
-            const resultAddress = `merged_scene_v_${RenderAddress.join('_')}.glb`;
-            console.log(resultAddress)
-            localStorage.setItem('RenderingImages',JSON.stringify(resultAddress))
-            window.location.href = '/threeDpage'; 
-
         }
         function sendData(inform) {
             fetch('http://127.0.0.1:5000/process', {

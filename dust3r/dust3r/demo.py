@@ -188,7 +188,6 @@ def get_image_files_from_folder(folder_path):
     # 폴더 내의 모든 PNG 파일을 리스트로 반환
     return [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.png')]
 
-
 def main_demo(tmpdirname, model, device, image_size, server_name=None, server_port=None, silent=False):
     # 저장할 경로 지정
     output_dir = "C:/Users/raina/OneDrive/바탕 화면/oneroom_3d/dust3r/3d_files"
@@ -218,22 +217,22 @@ def main_demo(tmpdirname, model, device, image_size, server_name=None, server_po
 
     version = 1  # 버전 카운터 초기화
 
-    # 미리 정의된 조합에 따라 병합 파일 생성
-    combinations = [
-        (0, 1),   # model1 + model2
-        (0, 2),   # model1 + model3
-        (1, 2),   # model2 + model3
-        (0, 1, 2) # model1 + model2 + model3
-    ]
+    while True:
+        # 사용자가 병합할 파일들을 선택
+        print("병합할 파일들을 선택하세요:")
+        for i, file in enumerate(output_files):
+            print(f"{i + 1}: {file}")
+        selected_indices = input("병합할 파일 번호를 쉼표로 구분하여 입력하세요 (예: 1,2): ")
+        selected_indices = [int(idx.strip()) - 1 for idx in selected_indices.split(",") if idx.strip().isdigit()]
 
-    for combination in combinations:
-        selected_files = [output_files[idx] for idx in combination]
+        selected_files = [output_files[idx] for idx in selected_indices if 0 <= idx < len(output_files)]
 
+        # GLB 파일 병합
         if len(selected_files) > 1:  # 최소 2개의 파일이 있을 때만 병합
             merged_file = merge_glb(selected_files, output_dir, version)
             print(f"Merged 3D model version {version} saved to: {merged_file}")
             version += 1  # 버전 증가
 
-    print("All models and merged files have been generated.")
-
-
+        more = input("다른 병합 파일을 생성하시겠습니까? (y/n): ")
+        if more.lower() != 'y':
+            break

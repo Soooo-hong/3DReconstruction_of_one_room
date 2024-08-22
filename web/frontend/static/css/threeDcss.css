@@ -37,3 +37,16 @@ canvas { display: block; }
     transform: translate(-50%, -50%);
     z-index: 1;
 }
+
+#load3dButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
