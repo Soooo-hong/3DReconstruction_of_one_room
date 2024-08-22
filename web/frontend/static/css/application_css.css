@@ -61,24 +61,21 @@ canvas { display: block; }
     background-color: #0056b3; /* 호버 시 배경 색상 */
     transform: scale(1.05); /* 호버 시 크기 확대 */
 }
-.activeButton { 
-    background-color: #0056b3; /* 눌린 상태의 배경 색상 */
-    transform: scale(0.88);
-    transition: transform 0.2s; /* 부드러운 전환 효과 */
-}
+
 #sceneButtonContainer {
     position: absolute; /* 절대 위치 */
-    top: 175px; /* 하단에서 20px 위치 */
-    left: 60%; /* 중앙 정렬 */
+    top: 150px; /* 하단에서 20px 위치 */
+    left: 55%; /* 중앙 정렬 */
     z-index: 1;
     gap: 30px;
 }
 .sceneGroup{
     display: flex;
-    flex-direction: column;
-    gap : 60px; /*질문과 버튼간의 거리*/
-    margin-bottom: 150px;
-    margin-left: 150px;
+    flex-direction: row;
+    gap : 30px; /*질문과 버튼간의 거리*/
+    margin-bottom: 90px;
+    margin-top: 20px;
+    
 }
 .sceneButton {
     padding: 10px 20px;
@@ -95,10 +92,34 @@ canvas { display: block; }
     background-color: #0056b3; /* 호버 시 배경 색상 */
     transform: scale(1.05); /* 호버 시 크기 확대 */
 }
+.sceneButton2 {
+    width: 700px;
+    height: 80px;
+    font-size: 20px;
+    font-family: 'Spoqa Han Sans Neo', sans-serif; /* 웹 전체 폰트로 지정 */
+    color: white;
+    background-color: #5271ff; /* 버튼 배경 색상 */
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s; /* 애니메이션 효과 */
+}
+.sceneButton2:hover {
+    background-color: #0056b3; /* 호버 시 배경 색상 */
+    transform: scale(1.05); /* 호버 시 크기 확대 */
+}
+.activeButton { 
+    background-color: #0056b3; /* 눌린 상태의 배경 색상 */
+    transform: scale(0.88);
+    transition: transform 0.2s; /* 부드러운 전환 효과 */
+}
 .text{
     color: #ffffff;
     font-size : 32px ;
     
+}
+.scenequestion { 
+    top : 50px;
 }
 .inputContainer {
     display: flex;
