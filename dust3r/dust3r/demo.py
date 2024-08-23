@@ -9,6 +9,8 @@ import functools
 import trimesh
 import copy
 from scipy.spatial.transform import Rotation
+import sys 
+sys.path.append(os.path.join(os.path.abspath(__file__),'.'))
 
 from dust3r.inference import inference
 from dust3r.image_pairs import make_pairs
@@ -191,7 +193,7 @@ def get_image_files_from_folder(folder_path):
 
 def main_demo(tmpdirname, model, device, image_size, server_name=None, server_port=None, silent=False):
     # 저장할 경로 지정
-    output_dir = "web/backend/glb_files"
+    output_dir = "web/frontend/static/glb"
     os.makedirs(output_dir, exist_ok=True)  # 디렉토리가 없으면 생성
 
     # 폴더 경로 리스트
