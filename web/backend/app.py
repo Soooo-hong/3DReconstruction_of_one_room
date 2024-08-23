@@ -1,11 +1,13 @@
-from flask import Flask,request,jsonify, render_template
+from flask import Flask,request,jsonify, render_template,send_from_directory
 from flask_cors import CORS
 import os 
 import time
 import json 
 import subprocess 
+import sys 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'dust3r'))
 
 app = Flask(__name__,
             template_folder= os.path.join(basedir,'../frontend/template'),
@@ -15,6 +17,10 @@ CORS(app)
 @app.route('/')
 def run_application() : 
     return render_template('application.html')
+
+@app.route('/web/frontend/static/glb/<path:filename>')
+def serve_static_files(filename):
+    return send_from_directory('../frontend/static/glb/', filename)
 
 @app.route('/threeDpage')
 def threeDpage():
@@ -27,26 +33,24 @@ def process_data() :
     data = data[0]      
     rooms_path = 'web/backend/crowling_images'
     delete_photos_from_rooms(rooms_path)
-    result = run_crawling_script(data)
+    result= run_crawling_script(data)
     #크롤링된 이미지가 저장이 되면 아래 함수가 돌아가야됨 
-    image_dir = 'web/backend/crowling_images/room_3'
+    image_dir = 'web/backend/crowling_images/room_2'
     wait_for_images(image_dir)
     
-    run_dust3r_infer()
-    
-    return render_template('application.html' , result=result)
+    #run_dust3r_infer()
+    #render_html = render_template('application.html' , result=result)
+    return jsonify(success=True)
 
 def run_crawling_script(input_data) : 
     input_data = json.dumps(input_data)
     result = subprocess.check_output(['python', 'web/backend/zigbang_web_crawling.py',input_data], text=True)
     # 크롤링 페이지 가서 input_data가 딕셔너리로 되어있으니깐 1개씩 접근필요 
-    return result
+    return jsonify(success=True,result = result)
 
 def run_dust3r_infer() : 
-    origin_dir = os.getcwd()
-    os.chdir('dust3r')
-    result = subprocess.check_output(['python', 'dust3r/demo.py'])
-    os.chdir(origin_dir)
+    result = subprocess.check_output(['python', 'dust3r/demo.py','--model_name','DUSt3R_ViTLarge_BaseDecoder_512_dpt'])
+
 def wait_for_images(image_dir,timeout= 60) : 
         start_time = time.time()
         while True : 
