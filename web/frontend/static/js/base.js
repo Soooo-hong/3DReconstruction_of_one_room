@@ -1,7 +1,8 @@
-
+var glb_path = '../static/glb/test1.glb'
 // 버튼 클릭 이벤트 리스너 등록
 document.getElementById('load3dButton').addEventListener('click', function() {
-    load3DModel(3); // 모델을 로드하는 함수 호출
+    load3DModel(3, glb_path); // 모델을 로드하는 함수 호출
+
 
     // 버튼을 숨기기
     this.style.display = 'none';
@@ -11,19 +12,40 @@ let plane1, plane2, plane3;
 let intersects;
 //3D 
 
-function load3DModel(room_count) {
-    
+function load3DModel(room_count, glb_path) {
+    const resetButton = document.getElementById('reset');
+    const room1Button = document.getElementById('room1');
+    const room2Button = document.getElementById('room2');
+    const room3Button = document.getElementById('room3');
+    resetButton.style.display = 'inline-block';
+    // room_count에 따라 버튼을 표시
+    if (room_count >= 1) {
+        room1Button.style.display = 'inline-block'; // room1 버튼 표시
+    }
+    if (room_count >= 2) {
+        room2Button.style.display = 'inline-block'; // room2 버튼 표시
+    }
+    if (room_count >= 3) {
+        room3Button.style.display = 'inline-block'; // room3 버튼 표시
+    }
+
+    const container = document.getElementById('threeDcontainer');
     // 씬 생성
     const scene = new THREE.Scene();
-
+   
     // 카메라 생성
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(8, 1.5, 3);
+    camera.position.set(66, 5, 60);//x : 좌우, y : 높이, z: 전후
     // 렌더러 생성
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0xffffff); 
+    renderer.setClearColor(0x172627);
     document.body.appendChild(renderer.domElement);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('threeDcontainer').appendChild(renderer.domElement);
+
+
+    //container.appendChild(renderer.domElement);
     let intersectedObject = null;
 
     // RGBELoader를 사용하여 HDRI 배경 로드
@@ -39,9 +61,9 @@ function load3DModel(room_count) {
         map:THREE.ImageUtils.loadTexture('../static/images/pm_logo.png')
     });
     img.map.needsUpdate = true; //ADDED
-    var plane_pmlogo = new THREE.Mesh(new THREE.PlaneGeometry(500, 225),img);
+    var plane_pmlogo = new THREE.Mesh(new THREE.PlaneGeometry(690, 320),img);
     plane_pmlogo.overdraw = true;
-    plane_pmlogo.position.set(0, 85, 500);
+    plane_pmlogo.position.set(110, 95, 600);
     plane_pmlogo.rotation.y = Math.PI; //이미지 뒤집기
     scene.add(plane_pmlogo);
 
@@ -49,19 +71,19 @@ function load3DModel(room_count) {
     var img2 = new THREE.MeshBasicMaterial({ 
         map:THREE.ImageUtils.loadTexture('../static/images/framed_map.png')
     });
-    var plane_map = new THREE.Mesh(new THREE.PlaneGeometry(115, 80),img2);
+    var plane_map = new THREE.Mesh(new THREE.PlaneGeometry(140, 95),img2);
     plane_map.rotation.y = Math.PI / 2;
     plane_map.overdraw = true;
-    plane_map.position.set(-200, 28, 5);
+    plane_map.position.set(-200, 28, 65);
     scene.add(plane_map);
 
     //프로젝트 소개 사진 배경에 추가
     var img3 = new THREE.MeshBasicMaterial({ 
         map:THREE.ImageUtils.loadTexture('../static/images/intro_final.png')
     });
-    var plane_intro = new THREE.Mesh(new THREE.PlaneGeometry(500, 225),img3);
+    var plane_intro = new THREE.Mesh(new THREE.PlaneGeometry(510, 250),img3);
     plane_intro.overdraw = true;
-    plane_intro.position.set(0, 85, -500);
+    plane_intro.position.set(63, 150, -500);
     scene.add(plane_intro);
 
     // 조명 추가
@@ -86,7 +108,7 @@ function load3DModel(room_count) {
     scene.add(ambientLight);
     // OrbitControls 추가
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.target.set(10, 2,-15);
+    controls.target.set(66, 5, 59);
     controls.update();
 
     // 창 크기 조정에 대응
@@ -100,11 +122,11 @@ function load3DModel(room_count) {
 
     const loader = new THREE.GLTFLoader();
     const models = {}; 
-    loader.load('../static/glb/merged_scene_3.glb', function(gltf1) {
+    loader.load(glb_path, function(gltf1) {
         const model1 = gltf1.scene;
         scene.add(model1);
-        model1.position.set(-2, 0, 0); //위치 선정
-        model1.scale.set(10, 10, 10);
+        model1.position.set(-2, -10, 0); //위치 선정
+        model1.scale.set(50, 50, 50);
 
         let mixer1;
         if (gltf1.animations && gltf1.animations.length > 0) {
@@ -115,15 +137,7 @@ function load3DModel(room_count) {
         }
         models.model1 = model1;
 
-        const gui = new dat.GUI();
-
-        // 모델 1 조절
-        const model1Folder = gui.addFolder('Model 1 Rotation');
-        model1Folder.add(models.model1.rotation, 'x', -Math.PI, Math.PI).name('Rotation X');
-        model1Folder.add(models.model1.rotation, 'y', -Math.PI, Math.PI).name('Rotation Y');
-        model1Folder.add(models.model1.rotation, 'z', -Math.PI, Math.PI).name('Rotation Z');
-        model1Folder.open();
-
+        
         
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
@@ -151,10 +165,10 @@ function load3DModel(room_count) {
             context1.textBaseline = 'middle';
             context1.fillText('원룸 1', canvas1.width / 2, canvas1.height / 2);
             const texture1 = new THREE.CanvasTexture(canvas1);
-            const planeGeometry1 = new THREE.PlaneGeometry(5, 2.5);
+            const planeGeometry1 = new THREE.PlaneGeometry(25, 12);
             const planeMaterial1 = new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide });
             plane1 = new THREE.Mesh(planeGeometry1, planeMaterial1);
-            plane1.position.set(-4, 3, -3.5); // 원룸 1 정보
+            plane1.position.set(-10, 0, -12.5); // 원룸 1 정보
             scene.add(plane1);
 
             const intersects = raycaster.intersectObjects([plane1]);
@@ -176,10 +190,10 @@ function load3DModel(room_count) {
             context1.textBaseline = 'middle';
             context1.fillText('원룸 1', canvas1.width / 2, canvas1.height / 2);
             const texture1 = new THREE.CanvasTexture(canvas1);
-            const planeGeometry1 = new THREE.PlaneGeometry(5, 2.5);
+            const planeGeometry1 = new THREE.PlaneGeometry(25, 12);
             const planeMaterial1 = new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide });
             plane1 = new THREE.Mesh(planeGeometry1, planeMaterial1);
-            plane1.position.set(-4, 3, -3.5); // 원룸 1 정보
+            plane1.position.set(-10, 3, -12.5); // 원룸 1 정보
             scene.add(plane1);
 
             //원룸2 정보 
@@ -193,10 +207,10 @@ function load3DModel(room_count) {
             context2.textBaseline = 'middle';
             context2.fillText('원룸 2', canvas2.width / 2, canvas2.height / 2);
             const texture2 = new THREE.CanvasTexture(canvas2);
-            const planeGeometry2 = new THREE.PlaneGeometry(5, 2.5);
+            const planeGeometry2 = new THREE.PlaneGeometry(25, 12);
             const planeMaterial2 = new THREE.MeshBasicMaterial({ map: texture2, side: THREE.DoubleSide });
             plane2 = new THREE.Mesh(planeGeometry2, planeMaterial2);
-            plane2.position.set(8, 3, -3.5); // 원룸 1 정보
+            plane2.position.set(52, 3, -12.5); // 원룸 1 정보
             scene.add(plane2);
 
         
@@ -220,10 +234,10 @@ function load3DModel(room_count) {
             context1.textBaseline = 'middle';
             context1.fillText('원룸 1', canvas1.width / 2, canvas1.height / 2);
             const texture1 = new THREE.CanvasTexture(canvas1);
-            const planeGeometry1 = new THREE.PlaneGeometry(5, 2.5);
+            const planeGeometry1 = new THREE.PlaneGeometry(25, 12);
             const planeMaterial1 = new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide });
             plane1 = new THREE.Mesh(planeGeometry1, planeMaterial1);
-            plane1.position.set(-4, 3, -3.5); // 원룸 1 정보
+            plane1.position.set(-10, 1.5, -12.5); // 원룸 1 정보
             scene.add(plane1);
 
             //원룸2 정보 
@@ -237,10 +251,10 @@ function load3DModel(room_count) {
             context2.textBaseline = 'middle';
             context2.fillText('원룸 2', canvas2.width / 2, canvas2.height / 2);
             const texture2 = new THREE.CanvasTexture(canvas2);
-            const planeGeometry2 = new THREE.PlaneGeometry(5, 2.5);
+            const planeGeometry2 = new THREE.PlaneGeometry(25, 12);
             const planeMaterial2 = new THREE.MeshBasicMaterial({ map: texture2, side: THREE.DoubleSide });
             plane2 = new THREE.Mesh(planeGeometry2, planeMaterial2);
-            plane2.position.set(8, 3, -3.5); // 원룸 1 정보
+            plane2.position.set(52, 1.5, -12.5); // 원룸 1 정보
             scene.add(plane2);
 
             //원룸3 정보 
@@ -254,10 +268,10 @@ function load3DModel(room_count) {
             context3.textBaseline = 'middle';
             context3.fillText('원룸 3', canvas3.width / 2, canvas3.height / 2);
             const texture3= new THREE.CanvasTexture(canvas3);
-            const planeGeometry3 = new THREE.PlaneGeometry(5, 2.5);
+            const planeGeometry3 = new THREE.PlaneGeometry(25, 12);
             const planeMaterial3 = new THREE.MeshBasicMaterial({ map: texture3, side: THREE.DoubleSide });
             plane3 = new THREE.Mesh(planeGeometry3, planeMaterial3);
-            plane3.position.set(18, 3, -3.5); // 원룸 1 정보
+            plane3.position.set(110, 1.5, -12.5); // 원룸 1 정보
             scene.add(plane3);
         
             
@@ -274,6 +288,137 @@ function load3DModel(room_count) {
             
         
 
+        
+
+        if (room_count==1){intersects = raycaster.intersectObjects([plane1]);}
+        else if (room_count==2){intersects = raycaster.intersectObjects([plane1, plane2]);}
+        else{intersects = raycaster.intersectObjects([plane1, plane2, plane3]);}
+
+        document.getElementById('reset').addEventListener('click', function() {//room1 버튼 클릭 이벤트 처리 
+            const target_plane1Position = new THREE.Vector3().copy(plane1.position);
+
+            controls.target.set(66, 8, 59);
+            controls.update();
+
+            // 카메라 이동 애니메이션
+            const duration = 1.5; // 이동 시간 (초)
+            const startPosition = new THREE.Vector3().copy(camera.position);
+            const endPosition = new THREE.Vector3(66, 5, 60);
+
+            let startTime = null;
+
+            function animateCamera(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsedTime = (timestamp - startTime) / 1500;
+
+                // 카메라 위치를 선형 보간
+                if (elapsedTime < duration) {
+                    camera.position.lerpVectors(startPosition, endPosition, elapsedTime / duration);
+                    requestAnimationFrame(animateCamera);
+                } else {
+                    camera.position.set(66, 8, 60);
+
+                    // OrbitControls의 타겟 위치를 업데이트
+                    
+                }
+            }
+            requestAnimationFrame(animateCamera);
+            
+        });
+
+        document.getElementById('room1').addEventListener('click', function() {//room1 버튼 클릭 이벤트 처리 
+            const target_plane1Position = new THREE.Vector3().copy(plane1.position);
+
+            // 카메라 이동 애니메이션
+            const duration = 2; // 이동 시간 (초)
+            const startPosition = new THREE.Vector3().copy(camera.position);
+            const endPosition = new THREE.Vector3(target_plane1Position.x+5, target_plane1Position.y - 12, target_plane1Position.z + 21);
+
+            let startTime = null;
+
+            function animateCamera(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsedTime = (timestamp - startTime) / 1000;
+                // OrbitControls의 타겟 위치를 업데이트
+                controls.target.set(target_plane1Position.x+5, target_plane1Position.y - 12, target_plane1Position.z+ 23);
+                controls.update();
+                // 카메라 위치를 선형 보    간
+                if (elapsedTime < duration) {
+                    camera.position.lerpVectors(startPosition, endPosition, elapsedTime / duration);
+                    requestAnimationFrame(animateCamera);
+                } else {
+                    camera.position.copy(endPosition);
+
+                    
+                }
+            }
+            requestAnimationFrame(animateCamera);
+            
+        });
+
+        document.getElementById('room2').addEventListener('click', function() {//room2 버튼 클릭 이벤트 처리 
+            const target_plane1Position = new THREE.Vector3().copy(plane2.position);
+
+            // 카메라 이동 애니메이션
+            const duration = 1.5; // 이동 시간 (초)
+            const startPosition = new THREE.Vector3().copy(camera.position);
+            const endPosition = new THREE.Vector3(target_plane1Position.x, target_plane1Position.y  - 12, target_plane1Position.z + 23);
+            controls.target.set(target_plane1Position.x, target_plane1Position.y - 12, target_plane1Position.z+ 25);
+            controls.update();
+            let startTime = null;
+
+            function animateCamera(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsedTime = (timestamp - startTime) / 1000;
+
+                // 카메라 위치를 선형 보간
+                if (elapsedTime < duration) {
+                    camera.position.lerpVectors(startPosition, endPosition, elapsedTime / duration);
+                    requestAnimationFrame(animateCamera);
+                } else {
+                    camera.position.copy(endPosition);
+
+                    // OrbitControls의 타겟 위치를 업데이트
+                    
+                }
+            }
+            requestAnimationFrame(animateCamera);
+            
+        });
+
+        document.getElementById('room3').addEventListener('click', function() {//room3 버튼 클릭 이벤트 처리 
+            const target_plane1Position = new THREE.Vector3().copy(plane3.position);
+
+            // 카메라 이동 애니메이션
+            const duration = 1.5; // 이동 시간 (초)
+            const startPosition = new THREE.Vector3().copy(camera.position);
+            const endPosition = new THREE.Vector3(target_plane1Position.x-12, target_plane1Position.y - 12, target_plane1Position.z + 23);
+
+            // OrbitControls의 타겟 위치를 업데이트
+            controls.target.set(target_plane1Position.x-12, target_plane1Position.y - 12, target_plane1Position.z +25);
+            controls.update();
+
+            let startTime = null;
+
+            function animateCamera(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsedTime = (timestamp - startTime) / 1000;
+
+                // 카메라 위치를 선형 보간
+                if (elapsedTime < duration) {
+                    camera.position.lerpVectors(startPosition, endPosition, elapsedTime / duration);
+                    requestAnimationFrame(animateCamera);
+                } else {
+                    camera.position.copy(endPosition);
+
+                    
+                }
+            }
+            requestAnimationFrame(animateCamera);
+            
+        });
+        
+        /*
         //원룸 정보 plane에 마우스 가져간 경우 처리 함수
         function onMouseMove(event) {
             // 마우스 좌표를 정규화
@@ -350,16 +495,27 @@ function load3DModel(room_count) {
                         requestAnimationFrame(animateCamera);
                     } else {
                         camera.position.copy(endPosition);
+
                         //controls.target.set(targetPosition.x, targetPosition.y-3, targetPosition.z+3.5);
                         //controls.update();
+                        controls.target.set(targetPosition.x, targetPosition.y - 3, targetPosition.z + 15);
+                        //controls.target.copy(targetPosition);
+                        //controls.target.copy(targetPosition.x, targetPosition.y-3, targetPosition.z+3);
+                        
+                        controls.update();
                     }
                 }
                 requestAnimationFrame(animateCamera);
             }
         }
-        window.addEventListener('mousemove', onMouseMove, false);
-        // 마우스 클릭 이벤트 리스너 등록
         window.addEventListener('click', onMouseClick, false);
+        window.addEventListener('mousemove', onMouseMove, false);
+        */
+
+
+        
+        // 마우스 클릭 이벤트 리스너 등록
+        
 
 
 

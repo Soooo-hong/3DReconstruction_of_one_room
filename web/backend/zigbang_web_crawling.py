@@ -17,31 +17,31 @@ room_info = {}
 
 bojeung_detail = {#전세금도 동일하게 적용
         '전체' : 0,
-        '20억' : -7,
-        '10억' : -33,
-        '5억' :-51,
+        #'20억' : -7,
+        #'10억' : -33,
+        #'5억' :-51,
         '1억' : -139,
-        '5000만원' : -188,
+        #'5000만원' : -188,
         '1000만원' : -226,
         '500만원' : -234,
-        '300만원' : -246,
+        #'300만원' : -246,
     }
 
 walse_detail = {
     '전체' : 0,
-    '500만원' : -12,
-    '300만원' : -39,
+    #'500만원' : -12,
+    #'300만원' : -39,
     '200만원' : -80,
     '100만원' :-103,
     '50만원' : -155,
-    '30만원' : -209
+    #'30만원' : -209
 }
 
 def budget_detail(typename):
     if typename == '전세':
         #전세금 입력
         while True : 
-            bojeung = input('전세금 금액을 다음 중 입력 : 전체 , 20억, 10억, 5억, 1억, 5000만원, 1000만원, 500만원, 300만원 :'  )
+            bojeung = input('전세금 금액을 다음 중 입력 : 전체, 1억, 1000만원, 500만원 :'  )
             if bojeung  in bojeung_detail.keys():
                 #(월세) 보증금 슬라이더 이동 
                 slider = driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div/div[1]/div/div[3]/div[4]/div[2]/div/div/div[5]/div[2]/div[3]')
@@ -59,7 +59,7 @@ def budget_detail(typename):
         
     else:
         while True : 
-            bojeung = input('보증금 금액을 다음 중 입력 : 전체 , 20억, 10억, 5억, 1억, 5000만원, 1000만원, 500만원, 300만원 :'  )
+            bojeung = input('보증금 금액을 다음 중 입력 : 전체, 1억, 1000만원, 500만원 :'  )
             if bojeung  in bojeung_detail.keys():
                 break
             else:
@@ -75,7 +75,7 @@ def budget_detail(typename):
 
         #월세 입력
         while True : 
-            walse = input('월세 금액을 다음 중 입력 : 전체 , 500만원, 300만원, 200만원, 100만원, 50만원, 30만원 :' ) 
+            walse = input('월세 금액을 다음 중 입력 : 전체 , 200만원, 100만원, 50만원 :' ) 
             if walse  in walse_detail.keys():
                 break
             else:
