@@ -18,10 +18,10 @@ room_info = {}
 
 bojeung_detail = {#전세금도 동일하게 적용
         '전체' : 0,
-        #'20억' : -7,
-        '10억' : -33,
-        '5억' :-51,
-        '1억' : -139,
+        '20억원' : -7,
+        '10억원' : -33,
+        '5억원' :-51,
+        '1억원' : -139,
         '5000만원' : -188,
         '1000만원' : -226,
         '500만원' : -234,
@@ -176,7 +176,7 @@ time.sleep(3)
 wait = WebDriverWait(driver,10)
 search_box = driver.find_element(By.XPATH,'//*[@id="__next"]/div[2]/div/div[1]/div/div[3]/div[1]/div[1]/div/div[1]/input')
 
-input_things = input('지역 입력하세요 : ')
+input_things = input_data['region'] 
 search_box.send_keys(input_things)
 time.sleep(2)
 
