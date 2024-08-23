@@ -148,3 +148,37 @@ canvas { display: block; }
 .hidden {
     display: none;
 }
+
+.loading-wrap {
+    position: absolute; /* 절대 위치 */
+    top: 120px; /* 하단에서 20px 위치 */
+    left: 20%; /* 중앙 정렬 */
+    font-family: 'Spoqa Han Sans Neo', sans-serif; /* 웹 전체 폰트로 지정 */
+    color: white;
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 300px;
+    background-color: #172627;
+}
+.loading-spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid #5271ff;
+    border-top: 5px solid transparent;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+  .ex-box {
+    padding: 10px;
+    border: 1px solid black;
+  }
