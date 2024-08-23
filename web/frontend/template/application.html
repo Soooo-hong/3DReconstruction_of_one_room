@@ -112,7 +112,13 @@
     </div>
     <script>
         let saveData =[];
-        let renderData = [];
+        renderData = [];
+        if (sessionStorage.getItem('renderData')) {
+            let renderData = sessionStorage.getItem('renderData');
+        } else {
+            let renderData = [];
+        }
+        
         document.getElementById('searchButton').addEventListener('click', () => {
             const input = document.getElementById('locationinput');
             if (input.value) {
@@ -264,14 +270,17 @@
             openScene1Button: () => {
                 toggleActiveButton('openScene1Button');
                 saveGroupState();
+                sessionStorage.setItem('renderData',renderData)
             },
             openScene2Button: () => {
                 toggleActiveButton('openScene2Button');
                 saveGroupState();
+                sessionStorage.setItem('renderData',renderData)
             },
             openScene3Button: () => {
                 toggleActiveButton('openScene3Button');
                 saveGroupState();
+                sessionStorage.setItem('renderData',renderData)
             },
         };
 
