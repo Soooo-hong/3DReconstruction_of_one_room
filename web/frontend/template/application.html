@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>3DReconstruction_of_one_room</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 추가 -->
     <link rel="stylesheet" href="../static/css/application_css.css"> <!-- CSS 파일 링크 -->
     <style>
         * {
@@ -314,6 +315,10 @@
                         buttonGroup.forEach(buttonId => {
                             document.getElementById(buttonId).classList.remove('hidden')
                         })
+                        const saveResult = localStorage.getItem('sceneText');
+                        document.getElementById('openScene1Button').innerText = saveResult;
+                        document.getElementById('openSceneButton').classList.remove('hidden');
+                        document.getElementById('openScene4Button').classList.remove('hidden');
                         document.getElementById(buttonId).classList.add('activeButton');
                     }
                 }
@@ -407,13 +412,7 @@
             const sceneElements2 = document.querySelector('.sceneButton2');
             if (lastClickedGroup.startsWith('rentprice') || lastClickedGroup.startsWith('monthprice') ) {
                 sendData(saveData)
-                // 만일 플라스크로부터 정보가 넘어온다면 hidden제거 코드를 플라스크와 연결되는 코드로 변경해야됨
-                sceneElements.forEach(sceneElement => {
-                    sceneElement.classList.remove('hidden');
-                });
-                sceneElements2.classList.remove('hidden')
-                sceneQuestion.classList.remove('hidden');
-                saveGroupState2()
+                
             } else if(lastClickedGroup.startsWith('open')) {
                 /*렌더링 데이터 보내기 코드작성 필요*/
                 console.log('클릭된 버튼 주소', renderData)
@@ -463,9 +462,25 @@
             const uniqueRenderData = [...new Set(renderData)]
             const RenderAddress = uniqueRenderData.map(id=> id.match(/\d+/))
             .filter(num=> num!= null).map(num=> num[0]).map(Number).sort((a,b) => a-b);
-            const resultAddress = `merged_scene_v_${RenderAddress.join('_')}.glb`;
+            let resultAddress;
+            if (RenderAddress ===1) {
+                resultAddress = `model${RenderAddress[0]}.glb`;
+            } else if (RenderAddress.length === 2) {
+                if (RenderAddress[0] ===1 && RenderAddress[1] === 2){
+                    resultAddress =`merged_scene_v1.glb`;
+                } else if (RenderAddress[0] ===1 && RenderAddress[1] === 3){
+                    resultAddress =`merged_scene_v2.glb`;
+                }else if (RenderAddress[0] ===2 && RenderAddress[1] === 3){
+                    resultAddress =`merged_scene_v3.glb`;
+                    console.log(resultAddress)
+                }
+            }else{
+                    resultAddress =`merged_scene_v4.glb`;
+                }            
+            
+            //const resultAddress = `merged_scene_v_${RenderAddress.join('_')}.glb`;
             console.log(resultAddress)
-            localStorage.setItem('RenderingImages',JSON.stringify(resultAddress))
+            localStorage.setItem('RenderingImages',resultAddress)
             window.location.href = '/threeDpage'; 
 
         }
@@ -480,8 +495,16 @@
             .then(response => response.json())
             .then(data => {
                 // 결과를 HTML에 표시
+                if (data.success){
+                    localStorage.setItem('sceneText',data.result)
+                document.getElementById('openSceneButton').classList.remove('hidden');
+                document.getElementById('openScene1Button').classList.remove('hidden');
+                document.getElementById('openScene2Button').classList.remove('hidden');
+                document.getElementById('openScene3Button').classList.remove('hidden');
+                document.getElementById('openScene4Button').classList.remove('hidden');  
                 document.getElementById('openScene1Button').innerText = data.result;
                 document.getElementById('sceneButtonContainer').classList.remove('hidden');
+            }
             })
             .catch(error => {
                 console.error('Error:', error);
