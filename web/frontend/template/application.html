@@ -46,28 +46,28 @@
         <div class="buttonGroup hidden" id="depositGroup">
             <p class="text">보증금 가격을 선택해주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
             <div class="buttonRow">
-                <button class="rotateButton" id="depositprice1">300만원 이하</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="depositprice2">300만원이상</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="depositprice3">500만원 이상</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="depositprice4">1000만원 이상</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice1">300만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice2">500만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice3">1000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice4">5000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
             </div>
         </div>
         <div class="buttonGroup hidden" id="monthrentGroup">
             <p class="text">월세 가격을 선택해​주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
             <div class="buttonRow">
-                <button class="rotateButton" id="monthprice1">50만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="monthprice2">70만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="monthprice3">90만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="monthprice4">100만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
+                <button class="rotateButton" id="monthprice1">30만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="monthprice2">50만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="monthprice3">100만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="monthprice4">200만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
             </div>
         </div>
         <div class="buttonGroup hidden" id="rentGroup">
             <p class="text">전세 가격을 선택해​주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
             <div class="buttonRow">
-                <button class="rotateButton" id="rentprice1">5000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="rentprice2">7000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="rentprice3">1억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
-                <button class="rotateButton" id="rentprice4">2.5억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
+                <button class="rotateButton" id="rentprice1">1억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rentprice2">5억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rentprice3">10억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rentprice4">20억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
             </div>
         </div>
     </div>
@@ -165,7 +165,7 @@
                 groups.monthRent.classList.remove('hidden');
                 saveData = saveData.map(item => ({
                     ...item,
-                    depositprice : '1번 보증금 가격'
+                    depositprice : '300만원'
                 }));
                 toggleActiveButton('depositprice1');
                 saveGroupState();
@@ -174,7 +174,7 @@
                 groups.monthRent.classList.remove('hidden');
                 saveData = saveData.map(item => ({
                     ...item,
-                    depositprice : '2번 보증금 가격'
+                    depositprice : '500만원'
                 }));
                 toggleActiveButton('depositprice2');
                 saveGroupState();
@@ -183,7 +183,7 @@
                 groups.monthRent.classList.remove('hidden');
                 saveData = saveData.map(item => ({
                     ...item,
-                    depositprice : '3번 보증금 가격'
+                    depositprice : '1000만원'
                 }));
                 toggleActiveButton('depositprice3');
                 saveGroupState();
@@ -192,7 +192,7 @@
                 groups.monthRent.classList.remove('hidden');
                 saveData = saveData.map(item => ({
                     ...item,
-                    depositprice : '4번 보증금 가격'
+                    depositprice : '5000만원'
                 }));
                 toggleActiveButton('depositprice4');
                 saveGroupState();
@@ -200,7 +200,7 @@
             monthprice1: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    monthprice : '1번 월세 가격'
+                    monthprice : '30만원'
                 }));                
                 toggleActiveButton('monthprice1');
                 saveGroupState();
@@ -208,7 +208,7 @@
             monthprice2: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    monthprice : '2번 월세 가격'
+                    monthprice : '50만원'
                 }));
                 toggleActiveButton('monthprice2');
                 saveGroupState();
@@ -216,7 +216,7 @@
             monthprice3: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    monthprice : '3번 월세 가격'
+                    monthprice : '100만원'
                 }));
                 toggleActiveButton('monthprice3');
                 saveGroupState();
@@ -224,7 +224,7 @@
             monthprice4: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    monthprice : '4번 월세 가격'
+                    monthprice : '200만원'
                 }));
                 toggleActiveButton('monthprice4');
                 saveGroupState();
@@ -232,7 +232,7 @@
             rentprice1: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    rentprice : '1번 전세 가격'
+                    rentprice : '1억원'
                 }));
                 toggleActiveButton('rentprice1');
                 saveGroupState();
@@ -240,7 +240,7 @@
             rentprice2: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    rentprice : '2번 전세 가격'
+                    rentprice : '5억원'
                 }));
                 toggleActiveButton('rentprice2');
                 saveGroupState();
@@ -248,7 +248,7 @@
             rentprice3: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    rentprice : '3번 전세 가격'
+                    rentprice : '10억원'
                 }));
                 toggleActiveButton('rentprice3');
                 saveGroupState();
@@ -256,7 +256,7 @@
             rentprice4: () => {
                 saveData = saveData.map(item => ({
                     ...item,
-                    rentprice : '4번 전세 가격'
+                    rentprice : '20억원'
                 }));
                 toggleActiveButton('rentprice4');
                 saveGroupState();
@@ -452,7 +452,8 @@
         }
         function goToRenderingPage() { 
             const uniqueRenderData = [...new Set(renderData)]
-            const RenderAddress = uniqueRenderData.map(id=> id.match(/\d+/)).filter(num=> num!= null).map(num=> num[0]);
+            const RenderAddress = uniqueRenderData.map(id=> id.match(/\d+/))
+            .filter(num=> num!= null).map(num=> num[0]).map(Number).sort((a,b) => a-b);
             const resultAddress = `merged_scene_v_${RenderAddress.join('_')}.glb`;
             console.log(resultAddress)
             localStorage.setItem('RenderingImages',JSON.stringify(resultAddress))
