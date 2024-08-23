@@ -191,14 +191,14 @@ def get_image_files_from_folder(folder_path):
 
 def main_demo(tmpdirname, model, device, image_size, server_name=None, server_port=None, silent=False):
     # 저장할 경로 지정
-    output_dir = "C:/Users/raina/OneDrive/바탕 화면/oneroom_3d/dust3r/3d_files"
+    output_dir = "web/backend/glb_files"
     os.makedirs(output_dir, exist_ok=True)  # 디렉토리가 없으면 생성
 
     # 폴더 경로 리스트
     folders = [
-        "C:/Users/raina/OneDrive/바탕 화면/oneroom_3d/r1",
-        "C:/Users/raina/OneDrive/바탕 화면/oneroom_3d/r2",
-        "C:/Users/raina/OneDrive/바탕 화면/oneroom_3d/r3"
+        "web/backend/crowling_images/room_1",
+        "web/backend/crowling_images/room_2",
+        "web/backend/crowling_images/room_3"
     ]
 
     # 각 폴더에 있는 이미지 파일 리스트를 가져옴
