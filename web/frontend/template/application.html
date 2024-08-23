@@ -73,6 +73,11 @@
         </div>
     </div>
 
+    <div class="loading-wrap ">
+        <div class="loading-spinner hidden" id = "spinner"></div>
+        <p class = "hidden" id="spinnerText">해당 정보를 가져오고 있습니다..</p>
+    </div>
+
     <div id="sceneButtonContainer">
         <div class ="scenequestion hidden" id= "openSceneButton"> 
             <p class="text">보고싶은 방을 클릭하고 Run 버튼을 눌러주세요</p>
@@ -411,8 +416,9 @@
             const sceneQuestion = document.querySelector('#openSceneButton');
             const sceneElements2 = document.querySelector('.sceneButton2');
             if (lastClickedGroup.startsWith('rentprice') || lastClickedGroup.startsWith('monthprice') ) {
+                document.querySelector('.loading-spinner').classList.remove('hidden')
+                document.querySelector('#spinnerText').classList.remove('hidden')
                 sendData(saveData)
-                
             } else if(lastClickedGroup.startsWith('open')) {
                 /*렌더링 데이터 보내기 코드작성 필요*/
                 console.log('클릭된 버튼 주소', renderData)
@@ -496,14 +502,16 @@
             .then(data => {
                 // 결과를 HTML에 표시
                 if (data.success){
+                    document.querySelector('.loading-spinner').classList.add('hidden')
+                    document.querySelector('#spinnerText').classList.add('hidden')
                     localStorage.setItem('sceneText',data.result)
-                document.getElementById('openSceneButton').classList.remove('hidden');
-                document.getElementById('openScene1Button').classList.remove('hidden');
-                document.getElementById('openScene2Button').classList.remove('hidden');
-                document.getElementById('openScene3Button').classList.remove('hidden');
-                document.getElementById('openScene4Button').classList.remove('hidden');  
-                document.getElementById('openScene1Button').innerText = data.result;
-                document.getElementById('sceneButtonContainer').classList.remove('hidden');
+                    document.getElementById('openSceneButton').classList.remove('hidden');
+                    document.getElementById('openScene1Button').classList.remove('hidden');
+                    document.getElementById('openScene2Button').classList.remove('hidden');
+                    document.getElementById('openScene3Button').classList.remove('hidden');
+                    document.getElementById('openScene4Button').classList.remove('hidden');  
+                    document.getElementById('openScene1Button').innerText = data.result;
+                    document.getElementById('sceneButtonContainer').classList.remove('hidden');
             }
             })
             .catch(error => {
