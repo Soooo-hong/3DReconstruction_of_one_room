@@ -58,7 +58,8 @@ canvas { display: block; }
 }*/
 
 .buttonContainer, .room_load {
-    background-color: #4CAF50; /* 녹색 배경 */
+    font-family: 'Spoqa Han Sans Neo', sans-serif; /* 웹 전체 폰트로 지정 */
+    background-color: #5271ff; /* 버튼 배경 색상 */
     color: white; /* 흰색 텍스트 */
     padding: 10px 20px; /* 패딩 조정 */
     text-align: center; /* 텍스트 가운데 정렬 */
