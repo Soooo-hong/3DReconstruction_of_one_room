@@ -1,9 +1,11 @@
-const glb_path2 = localStorage.getItem('RenderingImages')
+const glb_path2 = localStorage.getItem('RenderingImages');
+var room_count =Number( localStorage.getItem('Room_count'));
+
 var glb_path = 'web/frontend/static/glb/'+glb_path2
 //var glb_path = '../static/glb/test1.glb'
 // 버튼 클릭 이벤트 리스너 등록
 document.getElementById('load3dButton').addEventListener('click', function() {
-    load3DModel(3, glb_path); // 모델을 로드하는 함수 호출
+    load3DModel(room_count, glb_path); // 모델을 로드하는 함수 호출
 
 
     // 버튼을 숨기기

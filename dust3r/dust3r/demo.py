@@ -142,6 +142,7 @@ def get_reconstructed_scene(outdir, model, device, silent, image_size, filelist,
         scenegraph_type = scenegraph_type + "-" + str(refid)
 
     pairs = make_pairs(imgs, scene_graph=scenegraph_type, prefilter=None, symmetrize=True)
+    model = model.to(device)
     output = inference(pairs, model, device, batch_size=1, verbose=not silent)
 
     mode = GlobalAlignerMode.PointCloudOptimizer if len(imgs) > 2 else GlobalAlignerMode.PairViewer
@@ -157,6 +158,9 @@ def get_reconstructed_scene(outdir, model, device, silent, image_size, filelist,
                                                to_numpy(scene.get_im_poses().cpu()), cam_size=cam_size, 
                                                as_pointcloud=as_pointcloud, transparent_cams=transparent_cams, 
                                                silent=silent)
+    # 대상 파일이 이미 존재하면 삭제
+    if os.path.exists(output_path):
+        os.remove(output_path)
     os.rename(output_file, output_path)
 
     return output_path
@@ -188,7 +192,7 @@ import os
 
 def get_image_files_from_folder(folder_path):
     # 폴더 내의 모든 PNG 파일을 리스트로 반환
-    return [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.png')]
+    return [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.png') or f.endswith('.PNG') or f.endswith('.jpg') or f.endswith('.JPG')]
 
 
 def main_demo(tmpdirname, model, device, image_size, server_name=None, server_port=None, silent=False):
