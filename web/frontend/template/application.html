@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <title>3DReconstruction_of_one_room</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery 추가 -->
+    <link rel="stylesheet" href="../static/css/application_css.css"> <!-- CSS 파일 링크 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* 박스 모델 설정 */
+        }
+        @font-face {
+            font-family: 'Spoqa Han Sans Neo';
+            src: url('css/font/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo_TTF_original/SpoqaHanSansNeo-Bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        html, body {
+            height: 100%; /* 높이를 100%로 설정 */
+        }
+       
+    </style>
+</head>
+<body>
+	<div id="banner">미리보는 내 자취방</div> <!-- 배너 추가 -->
+
+    <div id="buttonContainer">
+        <div class="buttonGroup">
+            <div class="inputContainer">
+                <input type="text" class="inputField" placeholder="지역을 입력해주세요" id="locationinput"/>
+                <button class="searchButton" id="searchButton">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="34.7px" height="34.7px">    
+                        <path fill="white" d="M 9 2 C 5.1458514 2 2 5.1458514 2 9 C 2 12.854149 5.1458514 16 9 16 C 10.747998 16 12.345009 15.348024 13.574219 14.28125 L 14 14.707031 L 14 16 L 19.585938 21.585938 C 20.137937 22.137937 21.033938 22.137938 21.585938 21.585938 C 22.137938 21.033938 22.137938 20.137938 21.585938 19.585938 L 16 14 L 14.707031 14 L 14.28125 13.574219 C 15.348024 12.345009 16 10.747998 16 9 C 16 5.1458514 12.854149 2 9 2 z M 9 4 C 11.773268 4 14 6.2267316 14 9 C 14 11.773268 11.773268 14 9 14 C 6.2267316 14 4 11.773268 4 9 C 4 6.2267316 6.2267316 4 9 4 z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="buttonGroup">
+        <p class="text">전/월세를 선택해주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+        <div class="buttonRow">
+            <button class="rotateButton" id="Rent1">전세</button>
+            <button class="rotateButton" id="Rent2">월세</button>
+        </div>
+        </div>
+        <div class="buttonGroup hidden" id="depositGroup">
+            <p class="text">보증금 가격을 선택해주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+            <div class="buttonRow">
+                <button class="rotateButton" id="depositprice1">300만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice2">500만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice3">1000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="depositprice4">5000만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+            </div>
+        </div>
+        <div class="buttonGroup hidden" id="monthrentGroup">
+            <p class="text">월세 가격을 선택해​주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+            <div class="buttonRow">
+                <button class="rotateButton" id="monthprice1">30만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="monthprice2">50만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="monthprice3">100만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="monthprice4">200만원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
+            </div>
+        </div>
+        <div class="buttonGroup hidden" id="rentGroup">
+            <p class="text">전세 가격을 선택해​주세요</p> <!-- 버튼 사이에 텍스트 추가 -->
+            <div class="buttonRow">
+                <button class="rotateButton" id="rentprice1">1억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rentprice2">5억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rentprice3">10억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->
+                <button class="rotateButton" id="rentprice4">20억원</button> <!-- 보증금 버튼을 전세 버튼 아래에 위치 -->  
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-wrap ">
+        <div class="loading-spinner hidden" id = "spinner"></div>
+        <p class = "hidden" id="spinnerText">해당 정보를 가져오고 있습니다..</p>
+    </div>
+
+    <div id="sceneButtonContainer">
+        <div class ="scenequestion hidden" id= "openSceneButton"> 
+            <p class="text">보고싶은 방을 클릭하고 Run 버튼을 눌러주세요</p>
+        </div>
+        <div class = "sceneGroup ">
+        <div class="buttonRow">
+            <button class="sceneButton hidden" id="openScene1Button">
+                <p id="csvResult1" >해당하는 조건의 <br>
+                방이 존재하지 않습니다</p>
+            </button>
+        </div>
+        <div class="buttonRow">
+            <button class="sceneButton hidden" id="openScene2Button">
+                <p id="csvResult2">해당하는 조건의 <br>
+                    방이 존재하지 않습니다</p>
+            </button>
+        </div>        
+        <div class="buttonRow">
+            <button class="sceneButton hidden" id="openScene3Button">
+                <p id="csvResult3">해당하는 조건의 <br>
+                    방이 존재하지 않습니다</p>
+            </button>
+        </div>
+        </div>
+        <div class = "sceneGroup">
+            <div class="buttonRow">
+                <button class=" sceneButton2 hidden" id="openScene4Button" onclick="goToRenderingPage()">
+                    <p> Run <br>
+                        3D Reconstruction</p>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="../static/js/application.js"></script>
+</body>
+</html>
