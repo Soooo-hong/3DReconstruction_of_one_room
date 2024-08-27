@@ -6,7 +6,7 @@ import json
 import subprocess 
 import sys 
 import shutil
-
+import pandas as pd 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'dust3r'))
@@ -24,6 +24,21 @@ def run_application() :
 def serve_static_files(filename):
     return send_from_directory('../frontend/static/glb/', filename)
 
+CSV_FILE_PATH = os.path.join('web', 'backend', 'crowling_images', 'price.csv')
+
+@app.route('/get_price', methods=['GET'])
+def get_price():
+    try:
+        # CSV 파일 읽기
+        df = pd.read_csv(CSV_FILE_PATH)
+        
+        # 첫 번째 값 가져오기 (예: 첫 번째 행의 첫 번째 열)
+        first_value = df.iloc[0].to_dict()  # 필요한 데이터에 맞게 인덱스 조정
+        second_value = df.iloc[1].to_dict()
+        third_value = df.iloc[2].to_dict()
+        return jsonify(success = True, result = {'result1': first_value,'result2' : second_value, 'result3' : third_value})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 @app.route('/threeDpage')
 def threeDpage():
     return render_template('threeDpage.html')
@@ -36,13 +51,10 @@ def process_data() :
     rooms_path = 'web/backend/crowling_images'
     delete_photos_from_rooms(rooms_path)
     result= run_crawling_script(data)
-
-
-
     #크롤링된 이미지가 저장이 되면 아래 함수가 돌아가야됨 
     image_dir = 'web/backend/crowling_images/room_2'
     wait_for_images(image_dir, rooms_path)
-    #replace_photos_from_rooms(image_dir)
+    #replace_photos_from_rooms(image_dir)    
     run_dust3r_infer()
     render_html = render_template('application.html' , result=result)
     return jsonify(success=True)
@@ -56,7 +68,7 @@ def run_crawling_script(input_data) :
 def run_dust3r_infer() : 
     result = subprocess.check_output(['python', 'dust3r/demo.py','--model_name','DUSt3R_ViTLarge_BaseDecoder_512_dpt'])
 
-def wait_for_images(image_dir, rooms_path,timeout= 60) : 
+def wait_for_images(image_dir,rooms_path,timeout= 60) : 
         start_time = time.time()
         while True : 
             if any(file.endswith(('.png', '.jpg', '.jpeg', '.gif')) for file in os.listdir(image_dir)):
@@ -65,6 +77,34 @@ def wait_for_images(image_dir, rooms_path,timeout= 60) :
                 replace_photos_from_rooms(rooms_path)
                 #raise TimeoutError("이미지 저장이 완료되지 않았습니다.")
         time.sleep(1)  # 1초 대기 후 다시 확인
+        
+def replace_photos_from_rooms(base_path):
+    # 대상 방 리스트와 대체 방 리스트
+    rooms = ['room_1', 'room_2', 'room_3']
+    rep_rooms = ['replace_room_1', 'replace_room_2', 'replace_room_3']
+
+    # 각 방에 대해 반복
+    for room, rep_room in zip(rooms, rep_rooms):
+        room_path = os.path.join(base_path, room)  # 현재 방의 경로
+        rep_room_path = os.path.join(base_path, rep_room)  # 대체 방의 경로
+
+        # 현재 방에 있는 파일의 개수를 확인
+        image_files = [f for f in os.listdir(room_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+
+        # 파일이 3개 이하일 경우, 대체 방의 이미지를 복사
+        if len(image_files) <= 3:
+            print(f"{room}에 있는 파일 수가 3개 이하입니다. {rep_room}의 이미지를 복사합니다.")
+
+            # 현재 방의 파일 삭제
+            for f in image_files:
+                os.remove(os.path.join(room_path, f))
+
+            # 대체 방의 파일 복사
+            rep_image_files = [f for f in os.listdir(rep_room_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+            for rep_file in rep_image_files:
+                src_file = os.path.join(rep_room_path, rep_file)
+                dst_file = os.path.join(room_path, rep_file)
+                shutil.copy(src_file, dst_file)
         
 def delete_photos_from_rooms(base_path):
     # 삭제할 폴더 목록
@@ -87,35 +127,5 @@ def delete_photos_from_rooms(base_path):
         else:
             print(f'{room_path} 폴더가 존재하지 않음')
         
-def replace_photos_from_rooms(base_path):
-    # 대상 방 리스트와 대체 방 리스트
-    rooms = ['room_1', 'room_2', 'room_3']
-    rep_rooms = ['replace_room_1', 'replace_room_2', 'replace_room_3']
-    
-    # 각 방에 대해 반복
-    for room, rep_room in zip(rooms, rep_rooms):
-        room_path = os.path.join(base_path, room)  # 현재 방의 경로
-        rep_room_path = os.path.join(base_path, rep_room)  # 대체 방의 경로
-        
-        # 현재 방에 있는 파일의 개수를 확인
-        image_files = [f for f in os.listdir(room_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-        
-        # 파일이 3개 이하일 경우, 대체 방의 이미지를 복사
-        if len(image_files) <= 3:
-            print(f"{room}에 있는 파일 수가 3개 이하입니다. {rep_room}의 이미지를 복사합니다.")
-            
-            # 현재 방의 파일 삭제
-            for f in image_files:
-                os.remove(os.path.join(room_path, f))
-            
-            # 대체 방의 파일 복사
-            rep_image_files = [f for f in os.listdir(rep_room_path) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
-            for rep_file in rep_image_files:
-                src_file = os.path.join(rep_room_path, rep_file)
-                dst_file = os.path.join(room_path, rep_file)
-                shutil.copy(src_file, dst_file)
-
-
-
 if __name__ == '__main__' : 
     app.run(debug=True)
