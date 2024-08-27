@@ -13,6 +13,7 @@ import os
 import json
 import shutil
 import sys 
+import pandas as pd
 
 room_info = {}
 
@@ -239,7 +240,91 @@ else :
    
     
     
+prices = []
+image_urls = []
 
+# 매물 목록을 가져오기 (상위 3개의 매물만 가져옴)
+#listings = driver.find_elements(By.CSS_SELECTOR, "div[data-testid^='원룸매물리스트']")[:3]
+WebDriverWait(driver, 10).until(
+    EC.presence_of_all_elements_located((By.CSS_SELECTOR, "div[data-testid^='원룸매물리스트']"))
+)
+listings = driver.find_elements(By.CSS_SELECTOR, "div[data-testid^='원룸매물리스트']")
+scene_price = []
+find_cnt = 0
+for listing in listings:
+    # 매물의 가격 추출
+    try:
+        price_element = listing.find_element(By.CSS_SELECTOR,
+                                                "div.css-1563yu1.r-aw03qq.r-1wbh5a2.r-1w6e6rj.r-159m18f.r-1i10wst.r-b88u0q.r-vrz42v.r-fdjqy7.r-13wfysu.r-q42fyq.r-1ad0z5i")
+        price_text = price_element.text
+        prices.append(price_text)
+    except Exception as e:
+        print(f"가격 정보 추출 실패: {e}")
+        prices.append("가격 정보 없음")
+
+    # 매물의 이미지 URL 추출
+    try:
+        image_element = listing.find_element(By.CSS_SELECTOR, "div.css-1dbjc4n.r-1niwhzg")
+        style_attribute = image_element.get_attribute('style')
+
+        # 이미지 URL 추출
+        image_url_start = style_attribute.find('url("') + len('url("')
+        image_url_end = style_attribute.find('")', image_url_start)
+        image_url = style_attribute[image_url_start:image_url_end]
+        image_urls.append(image_url)
+    except Exception as e:
+        print(f"이미지 URL 추출 실패: {e}")
+        image_urls.append("이미지 URL 없음")
+
+    # 매물의 이미지 URL 추출
+    try:
+        image_element = listing.find_element(By.CSS_SELECTOR, "div.css-1dbjc4n.r-1niwhzg")
+        style_attribute = image_element.get_attribute('style')
+
+        # 이미지 URL 추출
+        image_url_start = style_attribute.find('url("') + len('url("')
+        image_url_end = style_attribute.find('")', image_url_start)
+        image_url = style_attribute[image_url_start:image_url_end]
+        image_urls.append(image_url)
+    except Exception as e:
+        print(f"이미지 URL 추출 실패: {e}")
+        image_urls.append("이미지 URL 없음")
+
+# 추출한 정보 출력
+# for i in range(len(prices)):
+#     print(f"매물 {i+1} - 가격: {prices[i]}, 이미지 URL: {image_urls[i]}")
+    
+# 정보를 Pandas DataFrame으로 변환
+url_count = {}
+duplicated_entries = []
+for price, url in zip(prices,image_urls) : 
+    if url in url_count : 
+        url_count[url] += 1 
+    else : 
+        url_count[url] = 1 
+    
+url_with_count = [url for url,count in url_count.items() if count ==2 ]
+if len(url_with_count) >= 2:
+    # 가격과 URL이 연속으로 같은 경우의 인덱스 저장
+    index_pairs = []
+    for i in range(len(prices) - 1):
+        if image_urls[i] == image_urls[i + 1] and prices[i] == prices[i + 1]:
+            index_pairs.append(i)
+
+    # 두 번째 경우부터 3개의 정보 추출
+    if len(index_pairs) > 1:
+        start_index = index_pairs[1]  # 두 번째 경우 인덱스
+        for i in range(start_index+1, start_index + 4):
+            if i < len(prices) :  # 범위 체크
+                print(f"매물 {i - start_index + 1} - 가격: {prices[i]}, 이미지 URL: {image_urls[i]}")
+        data = {'가격 ' : prices[start_index+1:start_index+4]}
+
+df = pd.DataFrame(data)
+
+# DataFrame을 CSV 파일로 저장
+df.to_csv('web/backend/crowling_images/price.csv', index=False, encoding='utf-8-sig')
+
+print("상위 3개의 매물 정보가 '매물정보.csv' 파일로 저장되었습니다.")
 
 
 #### 보류 ###########
