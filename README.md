@@ -25,10 +25,8 @@ Hit "Run" and wait. Then, you can click the address 'http://127.0.0.1:5000' in y
 
 ## Reuslt
 ### 3D Rendring of Scnenes
+![demo_vid (online-video-cutter com)](https://github.com/user-attachments/assets/1dfad6ea-15fa-49c3-8124-bf91f196946a)
 
-![home_vid (1)](https://github.com/user-attachments/assets/10a3c5ba-6af7-4ebc-9e8f-15729af9936b)
-
-![goroom_vid](https://github.com/user-attachments/assets/575d95c1-4fb1-4dc2-bdd4-b9504d574411)
 
 
 ## Members
