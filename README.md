@@ -25,8 +25,10 @@ Hit "Run" and wait. Then, you can click the address 'http://127.0.0.1:5000' in y
 
 ## Reuslt
 ### 3D Rendring of Scnenes
-(video of rendering) 
 
+![home_vid (1)](https://github.com/user-attachments/assets/10a3c5ba-6af7-4ebc-9e8f-15729af9936b)
+
+![goroom_vid](https://github.com/user-attachments/assets/575d95c1-4fb1-4dc2-bdd4-b9504d574411)
 
 
 ## Members
@@ -39,6 +41,6 @@ Hit "Run" and wait. Then, you can click the address 'http://127.0.0.1:5000' in y
 ### Tools
 ![JS](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![js](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white) ![js](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white) ![js](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white) ![js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white) ![js](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 
-### Result Page
-<img width="80%" src="[https://user-images.githubusercontent.com/16822641/109461495-913fc480-7aa5-11eb-9d0e-aff762669f98.gif](https://github.com/user-attachments/assets/c3f0da30-1408-47a1-acc5-3d43b759fe95)"/>
-![home_vid (1)](https://github.com/user-attachments/assets/852bc7c0-26fd-4415-9744-26c914105bac)
+
+
+
